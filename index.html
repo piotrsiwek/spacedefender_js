@@ -6,21 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Space defender</title>
     <style>
+        html {
+            text-align: center;
+        }
+        h1 { 
+            
+            font-family: consolas;
+        }
         #game-board {
             width: 600px;
-            height: 400%;
-            border: 1px solid #000;
-            margin: 0 auto;
+            height: 300px;
+            border: 1px solid #d10505;
+            margin: 1px auto;
             position: relative;
         }
         #player {
-            width: 60px;
+            width: 80px;
             height: 50px;
             position: absolute;
-            top: 0;
-            bottom: 0;
+            bottom: 0; 
             left: 50%;
             background-color: blue;
+            transform: translate(-50%);
 
 
         }
@@ -31,9 +38,46 @@
         <h1>Space defender</h1>
         <img src="" alt="" class="logo">
     </header>
-    <div class = "game-board">
+    <div id = "game-board">
         <div id="player"></div>
 
     </div>
+
+<script>
+    //take element
+    const playerElement = document.querySelector('#player');
+    const boardElement = document.querySelector('#game-board');
+
+
+
+    const movePlayer = (direction) => {
+        //count new position of player
+
+        const newPosition = playerElement.offsetLeft + direction * 10;
+        
+        //gather board position
+        const {left, right} = boardElement.getBoundingClientRect();
+
+        const maxRight = right - left;
+
+        //move player if he is within game board
+        if (newPosition > 0 && newPosition < maxRight) {
+            playerElement.style.left = `${newPosition}px` ;
+
+        } 
+
+    }
+    const handleKeyboard = (event) => {
+        event.code
+        switch (event.code) {
+            case 'ArrowLeft': movePlayer(-1); break;
+            case 'ArrowRight': movePlayer(1);
+        }
+    }
+    //keyborad 
+    window.addEventListener('keydown', handleKeyboard);
+
+
+</script>
 </body>
 </html>
