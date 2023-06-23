@@ -15,7 +15,7 @@
         }
         #game-board {
             width: 600px;
-            height: 300px;
+            height: 400px;
             border: 1px solid #d10505;
             margin: 1px auto;
             position: relative;
@@ -28,10 +28,16 @@
             left: 50%;
             background-color: blue;
             transform: translate(-50%);
-
-
         }
-    </style>
+        .bullet { 
+            position: absolute;
+            width: 5px;
+            height: 10px;
+            background-color: #d10505;
+        }
+        
+</style>
+
 </head>
 <body>
     <header class="primary-header">
@@ -44,6 +50,7 @@
     </div>
 
 <script>
+    const bullets = [];
     //take element
     const playerElement = document.querySelector('#player');
     const boardElement = document.querySelector('#game-board');
@@ -51,31 +58,66 @@
 
 
     const movePlayer = (direction) => {
-        //count new position of player
 
+        //count new position of player
         const newPosition = playerElement.offsetLeft + direction * 10;
         
         //gather board position
         const {left, right} = boardElement.getBoundingClientRect();
 
-        const maxRight = right - left;
+        const minLeft = playerElement.offsetWidth / 2 ;
+        const maxRight = right - left - minLeft;
 
         //move player if he is within game board
-        if (newPosition > 0 && newPosition < maxRight) {
+        if (newPosition >= minLeft && newPosition < maxRight) {
             playerElement.style.left = `${newPosition}px` ;
 
         } 
-
     }
+
+    const createBullet = () => {
+        // define looks
+
+        const bullet = document.createElement('div');
+        bullet.className = 'bullet' ;
+        bullet.style.left = `${playerElement.offsetLeft}px`;
+        bullet.style.bottom = `${playerElement.offsetHeight}px`;
+        
+        
+        // add to board
+
+        boardElement.appendChild(bullet);
+        bullets.push(bullet);
+    }
+
     const handleKeyboard = (event) => {
-        event.code
+        
         switch (event.code) {
-            case 'ArrowLeft': movePlayer(-1); break;
-            case 'ArrowRight': movePlayer(1);
+            case 'ArrowLeft':  movePlayer(-1); break;
+            case 'ArrowRight': movePlayer(1);  break;
+            case 'Space':      createBullet(); 
         }
     }
     //keyborad 
     window.addEventListener('keydown', handleKeyboard);
+
+    const moveBullets = () => {
+        for (let i = 0; i < bullets.length; i++) {
+            const bullet = bullets[i];
+
+            // move the bullet
+            bullet.style.top= `${bullet.offsetTop - 1}px`;
+            
+            if (bullet.offsetTop<=0){
+                // usun pocisk
+                bullets.splice(i, 1);
+                i--;
+                bullet.remove();
+            }
+        }
+    }
+    // inretvals
+    setInterval(moveBullets, 50 )
 
 
 </script>
