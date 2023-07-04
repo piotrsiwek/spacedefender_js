@@ -36,6 +36,7 @@
             background-color: #d10505;
         }
         
+        
 </style>
 
 </head>
@@ -62,7 +63,7 @@
         //count new position of player
         const newPosition = playerElement.offsetLeft + direction * 10;
         
-        //gather board position
+        //gather board position from getBoundingClientRect, but by destructuring to extract left end right
         const {left, right} = boardElement.getBoundingClientRect();
 
         const minLeft = playerElement.offsetWidth / 2 ;
@@ -106,7 +107,7 @@
             const bullet = bullets[i];
 
             // move the bullet
-            bullet.style.top= `${bullet.offsetTop - 1}px`;
+            bullet.style.top= `${bullet.offsetTop - 10}px`;
             
             if (bullet.offsetTop<=0){
                 // usun pocisk
@@ -116,6 +117,25 @@
             }
         }
     }
+
+    const createEnemy = () => {
+        //define how spaceship looks
+        const enemy = dokument.createElement('div');
+        enemy.className = 'enemy';
+
+        enemy.style.top = 0;
+        enemy.style.left = `${Math.floor(Math.random() * boardElement.offsetHeight)}px`;
+
+        //add to map
+
+        boardElement.appendChild(enemy);
+
+
+
+
+    }
+
+
     // inretvals
     setInterval(moveBullets, 50 )
 
