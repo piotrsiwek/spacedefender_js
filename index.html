@@ -19,6 +19,7 @@
             border: 1px solid #d10505;
             margin: 1px auto;
             position: relative;
+            overflow: hidden;
         }
         #player {
             width: 80px;
@@ -34,6 +35,12 @@
             width: 5px;
             height: 10px;
             background-color: #d10505;
+        }
+        .enemy {
+            position: absolute;
+            height: 50px;
+            width: 40px;
+            background-color: blueviolet;
         }
         
         
@@ -52,6 +59,7 @@
 
 <script>
     const bullets = [];
+    const enemies = [];
     //take element
     const playerElement = document.querySelector('#player');
     const boardElement = document.querySelector('#game-board');
@@ -119,25 +127,54 @@
     }
 
     const createEnemy = () => {
+        // create ships randomly
+        const shouldCreate = Math.round(Math.random());
+        if (shouldCreate <1) return;
+
+
         //define how spaceship looks
-        const enemy = dokument.createElement('div');
+        const enemy = document.createElement('div');
         enemy.className = 'enemy';
 
-        enemy.style.top = 0;
-        enemy.style.left = `${Math.floor(Math.random() * boardElement.offsetHeight)}px`;
+        enemy.style.top = -70 + 'px';
+        enemy.style.left = `${Math.floor(Math.random() * (boardElement.offsetWidth -60) + 60)}px`;
 
         //add to map
 
         boardElement.appendChild(enemy);
 
+        enemies.push(enemy)
+
 
 
 
     }
+    const moveEnemies = () => {
+        for (let i = 0; i < enemies.length; i++){
+            const enemy = enemies[i];
+            //move ship down
+            enemy.style.top = `${enemy.offsetTop + 5}px`;
+
+        //remove ship when reach end of the map
+
+        if (enemy.offsetTop >= boardElement.offsetHeight){
+            enemies.splice(i, 1);
+            enemy.remove();
+            alert('Koniec gry!');
+        }
+
+        }
+
+
+    } 
 
 
     // inretvals
-    setInterval(moveBullets, 50 )
+    setInterval(moveBullets, 50 );
+    setInterval(moveEnemies, 500 );
+
+    setInterval(createEnemy, 1000 );
+
 
 
 </script>
