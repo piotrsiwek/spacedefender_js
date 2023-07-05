@@ -110,6 +110,27 @@
     //keyborad 
     window.addEventListener('keydown', handleKeyboard);
 
+    const checkBulletCollision = (bullet) => {
+        const position = bullet.getBoundingClientRect();
+
+        for (let i = 0; i < enemies.length; i++) {
+            const enemyPosition = enemies[i].getBoundingClientRect();
+            
+            if (true) {
+                // remove bullet
+                const idx = bullets.indexOf(bullets);
+                bullets.splice(idx, 1);
+                bullet.remove();
+
+                // remove hit spaceship
+            }
+        }
+
+
+    }
+
+
+
     const moveBullets = () => {
         for (let i = 0; i < bullets.length; i++) {
             const bullet = bullets[i];
@@ -122,6 +143,8 @@
                 bullets.splice(i, 1);
                 i--;
                 bullet.remove();
+            } else {
+                checkBulletCollision(bullet);
             }
         }
     }
